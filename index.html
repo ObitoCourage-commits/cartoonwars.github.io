@@ -7861,8 +7861,8 @@
       setTimeout(typeEffect, 1000);
     });
   </script>
-	<!-- Noah's Credit Banner -->
-<div style="
+<!-- Noah's Credit Banner -->
+<div id="noah-credit-banner" style="
   position: fixed;
   bottom: 0;
   left: 0;
@@ -7871,12 +7871,50 @@
   color: #ffffff;
   text-align: center;
   padding: 8px 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Courier New', monospace;
   font-size: 14px;
   z-index: 9999;
   border-top: 2px solid #4a90e2;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 ">
-  Games provided by <a href="https://github.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor" target="_blank" style="color: #4a90e2; text-decoration: none; font-weight: bold;">Noah's Tutoring Hub</a> — original creator of these games.
+  Games provided by <a id="noah-credit-link" href="https://github.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor" target="_blank" style="color: #4a90e2; text-decoration: none; font-weight: bold; transition: color 0.3s ease;">Noah's Tutoring Hub</a> — original creator of these games.
+</div>
+
+<script>
+  function syncCreditBanner() {
+    const banner = document.getElementById('noah-credit-banner');
+    const link = document.getElementById('noah-credit-link');
+    if (!banner || !link) return;
+
+    const primary = getComputedStyle(document.documentElement)
+      .getPropertyValue('--primary-orange').trim() || '#4a90e2';
+    const dark = getComputedStyle(document.body)
+      .getPropertyValue('--dark-bg').trim() || '#1a1a2e';
+
+    banner.style.backgroundColor = dark;
+    banner.style.borderTopColor = primary;
+    link.style.color = primary;
+  }
+
+  // Run on load and whenever theme changes
+  document.addEventListener('DOMContentLoaded', syncCreditBanner);
+
+  // Hook into the existing selectPresetTheme and applyCustomTheme functions
+  const _origSelectPreset = window.selectPresetTheme;
+  window.selectPresetTheme = function(themeName) {
+    if (_origSelectPreset) _origSelectPreset(themeName);
+    setTimeout(syncCreditBanner, 50);
+  };
+
+  const _origApplyCustom = window.applyCustomTheme;
+  window.applyCustomTheme = function() {
+    if (_origApplyCustom) _origApplyCustom();
+    setTimeout(syncCreditBanner, 50);
+  };
+
+  // Also sync on page load after settings initialize
+  window.addEventListener('load', () => setTimeout(syncCreditBanner, 200));
+</script>
 </div>
 </body>
 </html>
