@@ -1132,7 +1132,7 @@
   <script src="js/games.js?v=20260311025500"></script>
   <script src="js/main.js?v=20260311102000"></script>
   <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.26.8/dist/pocketbase.umd.js" crossorigin="anonymous"></script>
-  <script src="js/online-counter.js"></script>
+  <!-- online-counter disabled - no backend -->
   <script src="js/video-chat.js?v=20260311162000"></script>
   <script src="js/live-chat.js?v=20260311142000"></script>
 <div class="site-broadcast-banner" id="siteBroadcastBanner" hidden></div>
@@ -1147,5 +1147,18 @@
     <div class="site-mention-toast-body" id="siteMentionToastBody"></div>
   </div>
 </div>
+  <script>
+  // Only load images when they're visible
+  const images = document.querySelectorAll('img');
+  const observer = new IntersectionObserver(imgs => {
+    imgs.forEach(img => {
+      if (img.isIntersecting) {
+        img.src = img.dataset.src;
+        observer.unobserve(img.target);
+      }
+    });
+  });
+  images.forEach(img => observer.observe(img));
+</script>
 </body>
 </html>
